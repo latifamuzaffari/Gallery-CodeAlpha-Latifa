@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #59300c;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+      }
+
+      .gallery-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 20px;
+        flex-direction: column;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: 2.5em;
+      }
+
+      .folders {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .folder-item {
+        padding: 10px 20px;
+        background-color: #fff;
+        color: #59300c;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 5px;
+      }
+
+      .folder-item:hover {
+        background-color: #eaeaea;
+        color: #000;
+      }
+
+      .gallery {
+        display: none;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .gallery-item {
+        width: calc(33% - 20px);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .gallery-item:hover {
+        transform: scale(1.05);
+      }
+
+      .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .lightbox-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        border-radius: 10px;
+      }
+
+      .close {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .gallery-item {
+          width: calc(50% - 20px);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .gallery-item {
+          width: calc(100% - 20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gallery-container">
+      <h1>My Gallery</h1>
+      <div class="folders">
+        <div class="folder-item" data-folder="folder1">Camera</div>
+        <div class="folder-item" data-folder="folder2">Screenshots</div>
+        <div class="folder-item" data-folder="folder3">Downloads</div>
+      </div>
+      <div class="gallery" id="folder1">
+        <div class="gallery-item">
+          <img
+            src="https://i2.wp.com/anniewearsit.com/wp-content/uploads/2018/05/1.27.18_3222.jpg?w=2874&h=1917&ssl=1"
+            alt="Image 1"
+          />
+        </div>
+        <div class="gallery-item">
+          <img
+            src="https://cdn.britannica.com/51/194651-050-747F0C18/Interior-National-Gallery-of-Art-Washington-DC.jpg"
+            alt="Image 2"
+          />
+        </div>
+        <div class="gallery-item">
+          <img
+            src="https://www.qantas.com/content/dam/travelinsider/images/explore/europe/united-kingdom/london/best-museums-art-galleries-to-visit-london/british-museum-london-interior.jpg"
+            alt="Image 3"
+          />
+        </div>
+      </div>
+      <div class="gallery" id="folder2">
+        <div class="gallery-item">
+          <img
+            src="https://tse4.mm.bing.net/th?id=OIP.2IZ-VNaSvTft4fM0ign8PgHaE7&pid=Api&P=0&h=220"
+            alt="Image 4"
+          />
+        </div>
+        <div class="gallery-item">
+          <img
+            src="https://d2jv9003bew7ag.cloudfront.net/uploads/Vancouver-Art-Gallery-via-Tourism-Vancouver.jpg"
+            alt="Image 5"
+          />
+        </div>
+        <div class="gallery-item">
+          <img
+            src="https://www.culturalartscenteronline.org/wp-content/uploads/2019/08/Gallery-Image-3-Op.-Mon.jpg"
+            alt="Image 6"
+          />
+        </div>
+      </div>
+      <div class="gallery" id="folder3">
+        <div class="gallery-item">
+          <img
+            src="https://i2.wp.com/anniewearsit.com/wp-content/uploads/2018/05/1.27.18_3222.jpg?w=2874&h=1917&ssl=1"
+            alt="Image 1"
+          />
+        </div>
+        <div class="gallery-item">
+          <img
+            src="https://cdn.britannica.com/51/194651-050-747F0C18/Interior-National-Gallery-of-Art-Washington-DC.jpg"
+            alt="Image 2"
+          />
+        </div>
+        <div class="gallery-item">
+          <img
+            src="https://www.qantas.com/content/dam/travelinsider/images/explore/europe/united-kingdom/london/best-museums-art-galleries-to-visit-london/british-museum-london-interior.jpg"
+            alt="Image 3"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <span class="close">&times;</span>
+      <img class="lightbox-content" id="lightbox-image" />
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImage = document.getElementById("lightbox-image");
+        const closeBtn = document.querySelector(".close");
+        const galleryItems = document.querySelectorAll(".gallery-item img");
+        const folders = document.querySelectorAll(".folder-item");
+        const galleries = document.querySelectorAll(".gallery");
+
+        folders.forEach((folder) => {
+          folder.addEventListener("click", function () {
+            galleries.forEach((gallery) => {
+              gallery.style.display = "none";
+            });
+            document.getElementById(this.dataset.folder).style.display = "flex";
+          });
+        });
+
+        galleryItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            lightbox.style.display = "block";
+            lightboxImage.src = this.src;
+            lightboxImage.alt = this.alt;
+          });
+        });
+
+        closeBtn.addEventListener("click", function () {
+          lightbox.style.display = "none";
+        });
+
+        lightbox.addEventListener("click", function (event) {
+          if (event.target !== lightboxImage) {
+            lightbox.style.display = "none";
+          }
+        });
+
+        // Initially show all images in the first folder
+        galleries.forEach((gallery) => {
+          gallery.style.display = "none";
+        });
+        document.getElementById("folder1").style.display = "flex";
+      });
+    </script>
+  </body>
+</html>
